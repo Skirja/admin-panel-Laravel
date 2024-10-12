@@ -1,73 +1,93 @@
-# Proyek Laravel 8: Sistem Manajemen Buku
+# Aplikasi Manajemen Penulis dan Buku Laravel 8
 
-Proyek ini adalah sistem manajemen buku sederhana yang dibangun menggunakan Laravel 8.  Sistem ini mendemonstrasikan pola arsitektur Model-View-Controller (MVC) dan menyertakan penanganan kesalahan dasar.
+Aplikasi ini dapat mengelola penulis dan buku-buku mereka. Aplikasi ini menyediakan panel admin untuk membuat, membaca, memperbarui, dan menghapus penulis dan buku. Aplikasi ini juga menyertakan API untuk berinteraksi dengan data.
 
-## Implementasi MVC
+## Desain Database
 
-Aplikasi ini mengikuti pola MVC untuk memisahkan kekhawatiran dan meningkatkan organisasi kode.
+Database terdiri dari dua tabel utama:
 
-**Models:** Model `App\Models\Book` dan `App\Models\Author` merepresentasikan struktur data untuk buku dan penulis, masing-masing. Model ini berinteraksi dengan database untuk mengambil, menyimpan, dan memperbarui data.
+### Tabel Penulis
+* id (integer, primary key, auto-increment)
+* nama (string)
+* bio (text)
+* tanggal_lahir (date)
+* created_at (timestamp)
+* updated_at (timestamp)
 
-**Views:** Views terletak di direktori `resources/views`.  Mereka bertanggung jawab untuk menampilkan data kepada pengguna.  Contohnya, `resources/views/admin/books/index.blade.php` menampilkan daftar buku.  Mesin templating Blade digunakan untuk menghasilkan HTML secara dinamis.
+### Tabel Buku
+* id (integer, primary key, auto-increment)  
+* judul (string)
+* id_penulis (integer, foreign key yang mereferensi penulis.id)
+* isbn (string)
+* tahun_terbit (integer)
+* deskripsi (text)
+* created_at (timestamp)
+* updated_at (timestamp)
 
-**Controllers:** Controllers menangani permintaan pengguna dan berinteraksi dengan model untuk mengambil dan memanipulasi data.  Kemudian mereka meneruskan data ke views yang sesuai untuk dirender.  Contohnya, `App\Http\Controllers\BookController` mengelola semua permintaan yang berkaitan dengan buku (membuat, membaca, memperbarui, menghapus).
+![](./readme-assets/Magang-ERD.png)
 
-Berikut adalah interaksi antara komponen-komponen ini:
+## API Endpoints
 
-1. Pengguna berinteraksi dengan aplikasi (misalnya, mengklik tombol untuk membuat buku baru).
-2. Permintaan diarahkan ke metode controller yang sesuai (misalnya, `BookController@store`).
-3. Metode controller berinteraksi dengan model untuk melakukan operasi database yang diperlukan.
-4. Metode controller meneruskan data ke view.
-5. View merender data dan menampilkannya kepada pengguna.
+API menyediakan endpoint berikut:
 
-**Contoh Kode (BookController.php):**
+### Auth
+- POST /api/login
+- POST /api/register
+- POST /api/logout
 
-```php
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'author_id' => 'required|exists:authors,id',
-        ]);
+### Penulis
+- GET /api/authors
+- GET /api/authors/{id}
+- POST /api/authors
+- PUT /api/authors/{id}
+- DELETE /api/authors/{id}
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+### Buku
+- GET /api/books
+- GET /api/books/{id}
+- POST /api/books
+- PUT /api/books/{id}
+- DELETE /api/books/{id}
 
-        Book::create($request->all());
-        return redirect()->route('books.index')->with('success', 'Buku berhasil dibuat!');
-    }
-```
+## Panel Admin
 
-Kode di atas menunjukkan contoh validasi input dan pembuatan buku baru.
+Panel admin menyediakan antarmuka untuk mengelola penulis dan buku:
 
+- Dashboard
+- Manajemen Penulis (CRUD)
+- Manajemen Buku (CRUD)
 
-## Penanganan Kesalahan
+![](./readme-assets/admin-panel.png)
 
-Aplikasi ini menggunakan mekanisme penanganan pengecualian bawaan Laravel.  File `app/Exceptions/Handler.php` berisi handler pengecualian default. Saat ini, tidak menyertakan logika penanganan pengecualian khusus. Semua pengecualian dilaporkan, dan bidang input sensitif tidak diflash kembali ke pengguna untuk alasan keamanan. Meskipun ini memberikan penanganan kesalahan dasar, implementasi yang lebih kuat dapat mencakup halaman kesalahan khusus, logging, dan penanganan khusus untuk berbagai jenis pengecualian.  Peningkatan di masa mendatang dapat mencakup penambahan penanganan dan logging kesalahan yang lebih canggih untuk memberikan debugging dan umpan balik pengguna yang lebih baik.
+## Ketergantungan (Dependencies)
 
-## Instalasi dan Pengoperasian
+Proyek ini menggunakan dependensi berikut:
 
-1. **Clone repositori:**
-   ```bash
-   git clone [URL repositori]
-   ```
+* **PHP:** ^7.3|^8.0
+* **Laravel Framework:** ^8.75
+* **fruitcake/laravel-cors:** ^2.0
+* **guzzlehttp/guzzle:** ^7.0.1
+* **laravel/sanctum:** ^2.11
+* **laravel/tinker:** ^2.5
+* **facade/ignition:** ^2.5 (untuk development)
+* **fakerphp/faker:** ^1.9.1 (untuk development)
+* **laravel/sail:** ^1.0.1 (untuk development)
+* **mockery/mockery:** ^1.4.4 (untuk testing)
+* **nunomaduro/collision:** ^5.10 (untuk development)
+* **phpunit/phpunit:** ^9.5.10 (untuk testing)
 
-2. **Instal dependensi:**
-   ```bash
-   composer install
-   ```
+## Petunjuk Instalasi
 
-3. **Jalankan migrasi:**
-   ```bash
-   php artisan migrate
-   ```
+1. Kloning repositori: `git clone [URL repositori]`
+2. Instal dependensi Composer: `composer install`
+3. Buat salinan file `.env.example` dan ganti namanya menjadi `.env`. Sesuaikan pengaturan database di file `.env`.
+4. Generate application key: `php artisan key:generate`
+5. Jalankan migrasi database: `php artisan migrate`
+6. (Opsional) Jalankan seeder database: `php artisan db:seed`
+7. Jalankan aplikasi: `php artisan serve`
 
-4. **Jalankan pelayan:**
-   ```bash
-   php artisan serve
-   ```
+## Informasi Tambahan
 
-Aplikasi sekarang dapat diakses melalui `http://127.0.0.1:8000`.
+* Aplikasi ini menggunakan sistem otentikasi bawaan Laravel.
+* API didokumentasikan menggunakan [alat dokumentasi API, jika ada].
+* Panel admin dapat diakses di `/admin`.
