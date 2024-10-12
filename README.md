@@ -47,3 +47,27 @@ Kode di atas menunjukkan contoh validasi input dan pembuatan buku baru.
 ## Penanganan Kesalahan
 
 Aplikasi ini menggunakan mekanisme penanganan pengecualian bawaan Laravel.  File `app/Exceptions/Handler.php` berisi handler pengecualian default. Saat ini, tidak menyertakan logika penanganan pengecualian khusus. Semua pengecualian dilaporkan, dan bidang input sensitif tidak diflash kembali ke pengguna untuk alasan keamanan. Meskipun ini memberikan penanganan kesalahan dasar, implementasi yang lebih kuat dapat mencakup halaman kesalahan khusus, logging, dan penanganan khusus untuk berbagai jenis pengecualian.  Peningkatan di masa mendatang dapat mencakup penambahan penanganan dan logging kesalahan yang lebih canggih untuk memberikan debugging dan umpan balik pengguna yang lebih baik.
+
+## Instalasi dan Pengoperasian
+
+1. **Clone repositori:**
+   ```bash
+   git clone [URL repositori]
+   ```
+
+2. **Instal dependensi:**
+   ```bash
+   composer install
+   ```
+
+3. **Jalankan migrasi:**
+   ```bash
+   php artisan migrate
+   ```
+
+4. **Jalankan pelayan:**
+   ```bash
+   php artisan serve
+   ```
+
+Aplikasi sekarang dapat diakses melalui `http://127.0.0.1:8000`.
