@@ -8,19 +8,17 @@ Database terdiri dari dua tabel utama:
 
 ### Tabel Penulis
 * id (integer, primary key, auto-increment)
-* nama (string)
-* bio (text)
-* tanggal_lahir (date)
+* name (varchar(255))
+* birth_date (date)
 * created_at (timestamp)
 * updated_at (timestamp)
 
 ### Tabel Buku
 * id (integer, primary key, auto-increment)  
-* judul (string)
-* id_penulis (integer, foreign key yang mereferensi penulis.id)
-* isbn (string)
-* tahun_terbit (integer)
-* deskripsi (text)
+* title (varchar(255))
+* price (decimal(8,2))
+* stock (integer)
+* author_id (integer)
 * created_at (timestamp)
 * updated_at (timestamp)
 
@@ -59,7 +57,7 @@ Panel admin menyediakan antarmuka untuk mengelola penulis dan buku:
 
 ![](./readme-assets/admin-panel.png)
 
-## Ketergantungan (Dependencies)
+## Dependencies
 
 Proyek ini menggunakan dependensi berikut:
 
@@ -68,7 +66,6 @@ Proyek ini menggunakan dependensi berikut:
 * **fruitcake/laravel-cors:** ^2.0
 * **guzzlehttp/guzzle:** ^7.0.1
 * **laravel/sanctum:** ^2.11
-* **laravel/tinker:** ^2.5
 * **facade/ignition:** ^2.5 (untuk development)
 * **fakerphp/faker:** ^1.9.1 (untuk development)
 * **laravel/sail:** ^1.0.1 (untuk development)
@@ -89,5 +86,4 @@ Proyek ini menggunakan dependensi berikut:
 ## Informasi Tambahan
 
 * Aplikasi ini menggunakan sistem otentikasi bawaan Laravel.
-* API didokumentasikan menggunakan [alat dokumentasi API, jika ada].
 * Panel admin dapat diakses di `/admin`.

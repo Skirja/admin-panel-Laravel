@@ -10,17 +10,17 @@
         .table {
             width: 70%;
             margin: 20px auto;
-            border-collapse: separate; /* Add space between cells */
-            border-spacing: 0.5rem 0; /* Adjust spacing as needed */
+            border-collapse: separate;
+            border-spacing: 0.5rem 0;
         }
         .table th, .table td {
             border: 1px solid #dee2e6;
             padding: 0.75rem;
-            vertical-align: middle; /* Vertically center text */
-            text-align: left; /* Align text to the left */
+            vertical-align: middle;
+            text-align: left;
         }
         .table th {
-            background-color: #f8f9fa; /* Light gray background for header */
+            background-color: #f8f9fa;
             font-weight: bold;
         }
         .btn-secondary {
